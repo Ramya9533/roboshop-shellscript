@@ -1,0 +1,33 @@
+[unit]
+
+Description = user Service
+[Service]
+User=roboshop
+Environment=MONGO=true
+Environment=REDIS_HOST=redis.daws76s.online
+
+Environment=MONGO_URL="mongodb://<mongodb.daws76s.online:27017/users"
+ExecStart=/bin/node /app/server.js
+SyslogIdentifier=user
+[Install]
+WantedBy=multi-user.target
+
+
+cp /home/centos/roboshop-shell/user.service /etc/systemd/system/user.service
+
+VALIDATE $? "Copying user service file"
+
+
+systemctl daemon-reload &>> $LOGFILE
+
+VALIDATE $? "Catalogue daemon reload" &>> $LOGFILE
+
+systemctl enable user &>> $LOGFILE
+
+VALIDATE $? "Enable user"
+
+systemctl start user &>> $LOGFILE
+
+VALIDATE $? "Starting user"
+
+
